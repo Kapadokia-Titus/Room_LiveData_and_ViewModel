@@ -12,13 +12,13 @@ public class WordRepository {
     private LiveData<List<Word>> mAllWords;
 
 
-    WordRepository(Application application) {
+    public WordRepository(Application application) {
         WordRoomDatabase db = WordRoomDatabase.getDatabase(application);
         mWordDao = db.wordDao();
         mAllWords = mWordDao.getAllWords();
     }
 
-    LiveData<List<Word>> getAllWords() {
+    public LiveData<List<Word>> getAllWords() {
         return mAllWords;
     }
     public void insert (Word word) {
