@@ -4,4 +4,6 @@
     <string name="button_save">Save</string>
     <string name="empty_not_saved">Word not saved because it is empty.</string>
     <string name="clear_all_data">Clear all Data</string>
+    <string name="no_word">No Word</string>
+    <string name="unable_to_update">Unable to Update</string>
 </resources>

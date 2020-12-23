@@ -6,6 +6,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -29,4 +30,8 @@ public interface WordDao {
     // deleting a single item
     @Delete
     void deleteWord(Word word);
+
+    // update word
+    @Update
+    void update(Word... word);
 }

@@ -84,4 +84,27 @@ public class WordRepository {
     public void deleteWord(Word word){
         new deleteWordAsyncTask(mWordDao).execute(word);
     }
+
+    // asyncTask for updating word
+    public static class updateWordAsyncTask extends AsyncTask<Word, Void, Void>{
+
+        private WordDao mWordDao;
+
+        updateWordAsyncTask(WordDao dao){
+            mWordDao =dao;
+        }
+
+        @Override
+        protected Void doInBackground(Word... words) {
+            mWordDao.update(words[0]);
+            return null;
+        }
+    }
+
+
+    //add the deleteWord() method to invoke the AsyncTask you defined.
+
+    public void updateWord(Word word){
+        new updateWordAsyncTask(mWordDao).execute(word);
+    }
 }
