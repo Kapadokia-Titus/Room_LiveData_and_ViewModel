@@ -1,14 +1,18 @@
 package kapadokia.nyandoro.room_livedata_and_viewmodel.ui;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -36,6 +40,28 @@ public class MainActivity extends AppCompatActivity {
 
         // Update the cached copy of the words in the adapter.
         mWordViewModel.getAllWords().observe(this, adapter::setWords);
+
+
+        // Add the functionality to swipe items in the
+        // recycler view to delete that item
+        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                Word myWord = adapter.getWordAtPosition(position);
+                Toast.makeText(MainActivity.this, "Deleting "+ myWord.getWord(), Toast.LENGTH_LONG).show();
+
+                //delete word
+                mWordViewModel.deleteWord(myWord);
+            }
+        });
+        helper.attachToRecyclerView(recyclerView);
     }
 
     @Override
@@ -57,5 +83,25 @@ public class MainActivity extends AppCompatActivity {
     public void addContent(View view) {
         Intent intent = new Intent(MainActivity.this, NewWordActivity.class);
         startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.clear_data){
+            Toast.makeText(this, "Clearing data ...", Toast.LENGTH_LONG).show();
+
+            //delete all
+            mWordViewModel.deleteAll();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
