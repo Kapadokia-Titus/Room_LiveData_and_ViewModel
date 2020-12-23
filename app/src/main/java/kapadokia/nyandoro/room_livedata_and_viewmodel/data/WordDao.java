@@ -19,4 +19,9 @@ public interface WordDao {
 
     @Query("SELECT * from word_table ORDER BY word ASC")
     LiveData<List<Word>> getAllWords();
+
+    // a method to get a single word.
+    // no need to return a liveData.
+    @Query("SELECT * from word_table LIMIT 1")
+    Word[] getAnyWord();
 }
